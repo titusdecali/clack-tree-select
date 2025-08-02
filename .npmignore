@@ -36,3 +36,4 @@ coverage/
 CONTRIBUTING.md
 examples/node_modules/
 examples/.pnpm-lock.yaml
+examples/pnpm-lock.yaml

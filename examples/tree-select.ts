@@ -93,15 +93,16 @@ async function main() {
 
 	console.log('Selected files:', fileSystemSelected);
 
-	// Example 3: Single selection mode
+	// Example 3: Single selection mode (only leaf nodes selectable)
 	console.log('\n🎯 Example 3: Single Selection Mode');
 	
 	const singleSelected = await treeSelect({
-		message: 'Choose one configuration file:',
+		message: 'Choose one configuration file (directories not selectable):',
 		tree: [
 			{
 				value: 'config',
 				name: 'config',
+				open: true, // Show expanded by default
 				children: [
 					{ value: 'tsconfig.json', name: 'tsconfig.json' },
 					{ value: 'package.json', name: 'package.json' },

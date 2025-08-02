@@ -187,14 +187,23 @@ const result = await treeSelect({
 const configFile = await treeSelect({
   message: 'Choose a configuration file:',
   tree: [
-    { value: 'tsconfig.json', name: 'TypeScript Config' },
-    { value: 'package.json', name: 'Package Config' },
-    { value: 'vite.config.js', name: 'Vite Config' }
+    {
+      value: 'config',
+      name: 'config',
+      open: true,
+      children: [
+        { value: 'tsconfig.json', name: 'TypeScript Config' },
+        { value: 'package.json', name: 'Package Config' },
+        { value: 'vite.config.js', name: 'Vite Config' }
+      ]
+    }
   ],
   multiple: false,
   required: true
 });
 ```
+
+> **Note**: In single selection mode, only leaf nodes (files without children) can be selected. Parent directories are shown but not selectable, ensuring users select actual items rather than containers.
 
 ### File System Integration
 

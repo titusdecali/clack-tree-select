@@ -7,15 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-## [0.1.0] - 2024-12-XX
+### Fixed
+- **Critical Fix**: Fixed cancel handling (`Ctrl+C`) not being properly detected by `isCancel()` due to version mismatch between `@clack/core` and `@clack/prompts`. Downgraded to compatible `@clack/core` 0.5.0 and implemented proper cancel symbol handling.
+
+### Changed  
+- **UX Improvement**: In single selection mode, parent directories are no longer selectable - only leaf nodes (files) can be selected. This provides clearer UX expectations where users select actual items rather than containers.
+- **Visual Enhancement**: In single selection mode, directories now display with `○` instead of `◻` to clearly indicate they are non-selectable.
+
+## [0.1.0] - 2025-08-02
 
 ### Added
 - 🌳 **Initial Release** - Beautiful tree selection prompts for CLI applications
 - ⌨️ **Smart Keyboard Shortcuts** - Intuitive navigation with toggle shortcuts
   - `Ctrl+E` - Toggle expand/collapse all directories
   - `Ctrl+A` - Toggle select/deselect all items  
-  - `Ctrl+C` - Collapse all directories
   - Arrow keys for navigation, Space for selection
+  - `Ctrl+C` - Cancel prompt (standard terminal behavior)
 - 🎯 **Hierarchical Selection** - Selecting parent directories automatically selects all children
 - 🎨 **Customizable Icons** - Personalize directory, file, expand/collapse icons
 - 📁 **File System Integration** - `fileSystemTreeSelect` for browsing local directories

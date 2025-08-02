@@ -175,7 +175,14 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 			: '';
 		const name = item.name;
 
+		// In single selection mode, directories are not selectable
+		const isDirectoryInSingleMode = !config.multiple && item.isDirectory;
+		
 		if (state === 'active') {
+			if (isDirectoryInSingleMode) {
+				// Show directory as non-selectable when active in single mode
+				return `${indent}${color.dim('○')} ${dirIndicator}${icon} ${color.cyan(name)}`;
+			}
 			return `${indent}${color.cyan(S_CHECKBOX_ACTIVE)} ${dirIndicator}${icon} ${color.cyan(name)}`;
 		}
 		if (state === 'selected') {
@@ -190,10 +197,16 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 		if (state === 'submitted') {
 			return `${indent}${color.dim(`${dirIndicator}${icon} ${name}`)}`;
 		}
+		
+		if (isDirectoryInSingleMode) {
+			// Show directories as non-selectable in single mode
+			return `${indent}${color.dim('○')} ${color.dim(`${dirIndicator}${icon} ${name}`)}`;
+		}
+		
 		return `${indent}${color.dim(S_CHECKBOX_INACTIVE)} ${color.dim(`${dirIndicator}${icon} ${name}`)}`;
 	};
 
-	return new TreeSelectPrompt({
+	const prompt = new TreeSelectPrompt({
 		...config,
 		tree: config.tree,
 		signal: config.signal,
@@ -279,5 +292,19 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 				}
 			}
 		},
-	}).prompt() as Promise<Value[] | symbol>;
+	});
+
+	// Handle cancellation properly by listening to events
+	return new Promise<Value[] | symbol>((resolve) => {
+		prompt.on('submit', (value) => {
+			resolve(value);
+		});
+		
+		prompt.on('cancel', (value) => {
+			// The cancel event should pass the cancel symbol
+			resolve(value);
+		});
+		
+		prompt.prompt();
+	});
 };
