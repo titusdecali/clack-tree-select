@@ -21,7 +21,7 @@ Beautiful, interactive tree selection prompts for command-line applications. Bui
 
 ![Tree Select Demo](demo.gif)
 
-[**▶️ Watch Interactive Demo on Asciinema**](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6)
+[**▶️ Watch Demo on Asciinema**](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6)
 
 > See navigation, hierarchical selection, and smart keyboard shortcuts in action.
 
