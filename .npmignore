@@ -1,0 +1,38 @@
+# Development files - keep local, don't publish to npm
+clack/
+.git/
+.github/
+node_modules/
+
+# Source files (we publish dist/ instead)
+src/
+tsconfig.json
+build.config.ts
+
+# Development tools
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Logs and temp files
+*.log
+.DS_Store
+.env
+.env.*
+
+# Test files
+test/
+tests/
+*.test.ts
+*.spec.ts
+coverage/
+
+# Build artifacts we don't want in npm
+.tsbuildinfo
+*.tgz
+
+# Documentation that's not needed in package
+CONTRIBUTING.md
+examples/node_modules/
+examples/.pnpm-lock.yaml

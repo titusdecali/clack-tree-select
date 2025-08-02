@@ -1,0 +1,15 @@
+{
+  "name": "clack-tree-select-examples",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "tree-select": "tsx tree-select.ts",
+    "integration": "tsx integration-demo.ts"
+  },
+  "dependencies": {
+    "clack-tree-select": "file:..",
+    "@clack/prompts": "^0.8.2",
+    "tsx": "^4.7.0"
+  }
+}
