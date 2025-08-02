@@ -13,7 +13,7 @@ import { intro, outro, isCancel } from '@clack/prompts';
  * - ✅ Improved validation with helpful messages
  */
 async function main() {
-	intro('🌳 Enhanced Tree Select Demo - DX Improvements');
+	intro('🌳 Enhanced Tree Select Demo');
 
 	// Example 1: Simple tree with enhanced defaults
 	console.log('\n📁 Example 1: Enhanced Simple Tree with keyboard shortcuts');

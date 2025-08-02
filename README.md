@@ -18,7 +18,11 @@
 
 Beautiful, interactive tree selection prompts for command-line applications. Built on top of [Clack](https://github.com/bombshell-dev/clack) for the best CLI experience.
 
-![clack-tree-select demo](https://via.placeholder.com/600x400/1a1a1a/ffffff?text=Tree+Select+Demo)
+## 🎬 Interactive Demo
+
+[![asciicast](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6.svg)](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6)
+
+> **Click to watch** the demo! See navigation, hierarchical selection, and smart keyboard shortcuts in action.
 
 ## ✨ Features
 
