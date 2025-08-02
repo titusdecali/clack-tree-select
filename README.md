@@ -27,7 +27,7 @@ Beautiful, interactive tree selection prompts for command-line applications. Bui
 
 ## ✨ Features
 
-- 🌳 **Hierarchical Selection** - Select parent directories to automatically select all children
+- 🌳 **Hierarchical Selection** - Select parent directories to select all children
 - ⌨️ **Smart Keyboard Shortcuts** - Intuitive navigation with toggle expand/select all
 - 🎨 **Customizable Styling** - Beautiful icons and colors that match your brand
 - 🚀 **Performance Optimized** - Efficient rendering for large directory trees  

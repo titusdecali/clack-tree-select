@@ -9,25 +9,22 @@ importers:
   .:
     dependencies:
       '@clack/prompts':
-        specifier: ^0.8.2
-        version: 0.8.2
+        specifier: ^1.0.0-alpha.1
+        version: 1.0.0-alpha.1
       clack-tree-select:
         specifier: file:..
-        version: file:..(@clack/prompts@0.8.2)
+        version: file:..(@clack/prompts@1.0.0-alpha.1)
       tsx:
         specifier: ^4.7.0
         version: 4.20.3
 
 packages:
 
-  '@clack/core@0.3.5':
-    resolution: {integrity: sha512-5cfhQNH+1VQ2xLQlmzXMqUoiaH0lRBq9/CLW9lTyMbuKLC3+xEK01tHVvyut++mLOn5urSHmkm6I0Lg9MaJSTQ==}
+  '@clack/core@1.0.0-alpha.1':
+    resolution: {integrity: sha512-rFbCU83JnN7l3W1nfgCqqme4ZZvTTgsiKQ6FM0l+r0P+o2eJpExcocBUWUIwnDzL76Aca9VhUdWmB2MbUv+Qyg==}
 
-  '@clack/core@0.5.0':
-    resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
-
-  '@clack/prompts@0.8.2':
-    resolution: {integrity: sha512-6b9Ab2UiZwJYA9iMyboYyW9yJvAO9V753ZhS+DHKEjZRKAxPPOb7MXXu84lsPFG+vZt6FRFniZ8rXi+zCIw4yQ==}
+  '@clack/prompts@1.0.0-alpha.1':
+    resolution: {integrity: sha512-07MNT0OsxjKOcyVfX8KhXBhJiyUbDP1vuIAcHc+nx5v93MJO23pX3X/k3bWz6T3rpM9dgWPq90i4Jq7gZAyMbw==}
 
   '@esbuild/aix-ppc64@0.25.8':
     resolution: {integrity: sha512-urAvrUedIqEiFR3FYSLTWQgLu5tb+m0qZw0NBEasUeo6wuqatkMDaRT+1uABiGXEu5vqgPd7FGE1BhsAIy9QVA==}
@@ -223,19 +220,14 @@ packages:
 
 snapshots:
 
-  '@clack/core@0.3.5':
+  '@clack/core@1.0.0-alpha.1':
     dependencies:
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
-  '@clack/core@0.5.0':
+  '@clack/prompts@1.0.0-alpha.1':
     dependencies:
-      picocolors: 1.1.1
-      sisteransi: 1.0.5
-
-  '@clack/prompts@0.8.2':
-    dependencies:
-      '@clack/core': 0.3.5
+      '@clack/core': 1.0.0-alpha.1
       picocolors: 1.1.1
       sisteransi: 1.0.5
 
@@ -317,10 +309,10 @@ snapshots:
   '@esbuild/win32-x64@0.25.8':
     optional: true
 
-  clack-tree-select@file:..(@clack/prompts@0.8.2):
+  clack-tree-select@file:..(@clack/prompts@1.0.0-alpha.1):
     dependencies:
-      '@clack/core': 0.5.0
-      '@clack/prompts': 0.8.2
+      '@clack/core': 1.0.0-alpha.1
+      '@clack/prompts': 1.0.0-alpha.1
       is-unicode-supported: 1.3.0
       picocolors: 1.1.1
       sisteransi: 1.0.5

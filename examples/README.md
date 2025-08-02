@@ -39,7 +39,7 @@ Shows how to integrate tree-select with existing Clack CLIs:
 
 ## Features Demonstrated
 
-- **Hierarchical Selection** - Select parents to auto-select children
+- **Hierarchical Selection** - Select parents to select children
 - **Smart Toggle Shortcuts** - Ctrl+E (expand/collapse all), Ctrl+A (select/deselect all)
 - **File System Browsing** - Browse local directories with filtering
 - **Customizable Styling** - Custom icons and validation messages

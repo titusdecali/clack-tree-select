@@ -9,8 +9,8 @@ importers:
   .:
     dependencies:
       '@clack/core':
-        specifier: ^0.5.0
-        version: 0.5.0
+        specifier: ^1.0.0-alpha.1
+        version: 1.0.0-alpha.1
       '@clack/prompts':
         specifier: '>=0.8.0'
         version: 0.11.0
@@ -105,6 +105,9 @@ packages:
 
   '@clack/core@0.5.0':
     resolution: {integrity: sha512-p3y0FIOwaYRUPRcMO7+dlmLh8PSRcrjuTndsiA0WAFbWES0mLZlrjVoBRZ9DzkPFJZG6KGkJmoEAY0ZcVWTkow==}
+
+  '@clack/core@1.0.0-alpha.1':
+    resolution: {integrity: sha512-rFbCU83JnN7l3W1nfgCqqme4ZZvTTgsiKQ6FM0l+r0P+o2eJpExcocBUWUIwnDzL76Aca9VhUdWmB2MbUv+Qyg==}
 
   '@clack/prompts@0.11.0':
     resolution: {integrity: sha512-pMN5FcrEw9hUkZA4f+zLlzivQSeQf5dRGJjSUbvVYDLvpKCdQx5OaknvKzgbtXOizhP+SJJJjqEbOe55uKKfAw==}
@@ -1217,6 +1220,11 @@ snapshots:
     optional: true
 
   '@clack/core@0.5.0':
+    dependencies:
+      picocolors: 1.1.1
+      sisteransi: 1.0.5
+
+  '@clack/core@1.0.0-alpha.1':
     dependencies:
       picocolors: 1.1.1
       sisteransi: 1.0.5

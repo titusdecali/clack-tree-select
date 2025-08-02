@@ -1,4 +1,4 @@
-import { Prompt, type PromptOptions, isCancel, CANCEL_SYMBOL } from '@clack/core';
+import { Prompt, type PromptOptions, isCancel } from '@clack/core';
 
 /**
  * Represents a tree item with optional children and metadata
@@ -194,6 +194,11 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 		
 		const targetItem = findItem(this.tree);
 		
+		// In single selection mode, prevent selection of directories
+		if (!this.multiple && targetItem?.children) {
+			return;
+		}
+		
 		if (isCurrentlySelected) {
 			// Deselect this item and all its children
 			this.value = this.value.filter(v => v !== targetValue);
@@ -377,22 +382,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	/**
 	 * Start the prompt and return a Promise that resolves with the selected values or cancel symbol
 	 */
-	public prompt(): Promise<T[] | symbol> {
-		return new Promise((resolve) => {
-			this.on('submit', () => {
-				resolve(this.value || []);
-			});
-			
-			this.on('cancel', () => {
-				resolve(CANCEL_SYMBOL);
-			});
-			
-			// Call the parent class start method if it exists
-			if (typeof (this as any).start === 'function') {
-				(this as any).start();
-			}
-		});
-	}
+
 }
 
 export default TreeSelectPrompt;

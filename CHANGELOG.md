@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Fixed
+- **Single Selection Mode**: Fixed directories being selectable in single selection mode. Directories now display with circle (○) indicators and cannot be selected, ensuring only leaf nodes (files) are selectable.
+- **Dependency Updates**: Updated to `@clack/core@1.0.0-alpha.1` and `@clack/prompts@1.0.0-alpha.1` for improved compatibility and performance.
+- **Cancellation Handling**: Removed custom cancel symbol handling to use Clack's built-in `isCancel` function, fixing symbol display issues.
+- **Code Cleanup**: Removed debug code and test artifacts for cleaner codebase.
+
 ## [0.1.3] - 2025-08-02
 
 ### Fixed
