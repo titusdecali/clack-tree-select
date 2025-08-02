@@ -1,4 +1,4 @@
-import { Prompt, type PromptOptions, isCancel } from '@clack/core';
+import { Prompt, type PromptOptions, isCancel, CANCEL_SYMBOL } from '@clack/core';
 
 /**
  * Represents a tree item with optional children and metadata
@@ -384,34 +384,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			});
 			
 			this.on('cancel', () => {
-				// Try to access the real cancel symbol that isCancel recognizes
-				try {
-					// Get all symbols from the isCancel function's scope
-					const core = require('@clack/core');
-					
-					// Check if there's a way to get the real cancel symbol
-					// Try common patterns
-					const possibleSymbols = [
-						Symbol.for('clack:cancel'),
-						Symbol('clack:cancel'),
-						core.CANCEL_SYMBOL,
-						core.cancelSymbol,
-						(core as any)._CANCEL_SYMBOL,
-					].filter(Boolean);
-					
-					// Find the first symbol that isCancel recognizes
-					const realCancelSymbol = possibleSymbols.find(sym => core.isCancel(sym));
-					
-					if (realCancelSymbol) {
-						resolve(realCancelSymbol);
-					} else {
-						// Fallback - return a symbol that the test can identify as cancelled
-						resolve(Symbol('clack:cancel'));
-					}
-				} catch (error) {
-					// Fallback
-					resolve(Symbol('clack:cancel'));
-				}
+				resolve(CANCEL_SYMBOL);
 			});
 			
 			// Call the parent class start method if it exists

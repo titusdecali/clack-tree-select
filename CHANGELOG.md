@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [0.1.3] - 2025-08-02
+
+### Fixed
+- **Critical Fix**: Resolved hanging issue caused by mixing CommonJS `require()` with ES modules in cancel handler. Prompt now properly displays interactive tree interface and responds to user input.
+
 ## [0.1.1] - 2025-08-02
 
 ### Fixed
