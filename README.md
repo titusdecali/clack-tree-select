@@ -4,10 +4,9 @@
 [![npm downloads](https://img.shields.io/npm/dm/clack-tree-select.svg)](https://npmjs.com/package/clack-tree-select)
 [![license](https://img.shields.io/npm/l/clack-tree-select.svg)](https://github.com/yourusername/clack-tree-select/blob/main/LICENSE)
 
-## 💖 Sponsored by
-
 <div align="center">
-  <h3>Stringer CLI</h3>
+  <h3>💖 Sponsored by</h3>
+  <h4>Stringer CLI</h4>
   <p><strong>"Make your React & Vue apps multilingual in minutes!"</strong></p>
   <img src="https://c81fz8ovlk.ufs.sh/f/pOylDC1T5WMxVeE77528My7Qi1znPO4WjdvHBrD6fcNtTquk" alt="Stringer CLI Logo" width="250">
   <br>
@@ -18,11 +17,13 @@
 
 Beautiful, interactive tree selection prompts for command-line applications. Built on top of [Clack](https://github.com/bombshell-dev/clack) for the best CLI experience.
 
-## 🎬 Interactive Demo
+## 🎬 Demo
 
-[![asciicast](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6.svg)](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6)
+![Tree Select Demo](demo.gif)
 
-> **Click to watch** the demo! See navigation, hierarchical selection, and smart keyboard shortcuts in action.
+[**▶️ Watch Interactive Demo on Asciinema**](https://asciinema.org/a/UaV0pOtfI5BGgcc0m8xAqNfW6)
+
+> See navigation, hierarchical selection, and smart keyboard shortcuts in action.
 
 ## ✨ Features
 

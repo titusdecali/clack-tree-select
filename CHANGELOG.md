@@ -7,12 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
-### Fixed
-- **Critical Fix**: Fixed cancel handling (`Ctrl+C`) not being properly detected by `isCancel()` due to version mismatch between `@clack/core` and `@clack/prompts`. Downgraded to compatible `@clack/core` 0.5.0 and implemented proper cancel symbol handling.
+## [0.1.1] - 2025-08-02
 
-### Changed  
-- **UX Improvement**: In single selection mode, parent directories are no longer selectable - only leaf nodes (files) can be selected. This provides clearer UX expectations where users select actual items rather than containers.
-- **Visual Enhancement**: In single selection mode, directories now display with `○` instead of `◻` to clearly indicate they are non-selectable.
+### Fixed
+- **Demo Enhancement**: Replaced asciinema link with inline animated GIF for better GitHub README experience. Demo now plays directly in the README instead of redirecting to external site.
 
 ## [0.1.0] - 2025-08-02
 
