@@ -95,6 +95,184 @@ main();
 
 **Perfect integration** - works alongside all your existing Clack prompts! 🎯
 
+## 🌲 Beyond Files: Any Tree Data Structure
+
+While `clack-tree-select` works great with file systems, **it's designed as a generic tree selection tool**. You can create hierarchical selection prompts for any data structure! Here are some powerful examples:
+
+### 🎨 UI Component Library Selection
+
+```typescript
+const components = await treeSelect({
+  message: 'Select UI components to include:',
+  tree: [
+    {
+      value: 'forms',
+      name: 'Form Components',
+      children: [
+        { value: 'forms/input', name: 'Text Input' },
+        { value: 'forms/select', name: 'Select Dropdown' },
+        { value: 'forms/checkbox', name: 'Checkbox' },
+        { value: 'forms/radio', name: 'Radio Button' }
+      ]
+    },
+    {
+      value: 'navigation',
+      name: 'Navigation',
+      children: [
+        { value: 'nav/header', name: 'Header' },
+        { value: 'nav/sidebar', name: 'Sidebar' },
+        { value: 'nav/breadcrumb', name: 'Breadcrumb' },
+        { value: 'nav/pagination', name: 'Pagination' }
+      ]
+    },
+    {
+      value: 'feedback',
+      name: 'Feedback',
+      children: [
+        { value: 'feedback/alert', name: 'Alert' },
+        { value: 'feedback/toast', name: 'Toast' },
+        { value: 'feedback/modal', name: 'Modal' },
+        { value: 'feedback/tooltip', name: 'Tooltip' }
+      ]
+    }
+  ]
+});
+```
+
+### 🏢 Organization/Department Structure
+
+```typescript
+interface Department {
+  id: string;
+  name: string;
+  manager?: string;
+}
+
+const departments = await treeSelect<Department>({
+  message: 'Select departments for the training program:',
+  tree: [
+    {
+      value: { id: 'eng', name: 'Engineering', manager: 'Alice' },
+      name: 'Engineering',
+      children: [
+        { value: { id: 'frontend', name: 'Frontend' }, name: 'Frontend Team' },
+        { value: { id: 'backend', name: 'Backend' }, name: 'Backend Team' },
+        { value: { id: 'devops', name: 'DevOps' }, name: 'DevOps Team' }
+      ]
+    },
+    {
+      value: { id: 'product', name: 'Product', manager: 'Bob' },
+      name: 'Product',
+      children: [
+        { value: { id: 'design', name: 'Design' }, name: 'Design Team' },
+        { value: { id: 'pm', name: 'Product Management' }, name: 'Product Managers' },
+        { value: { id: 'research', name: 'User Research' }, name: 'Research Team' }
+      ]
+    }
+  ]
+});
+```
+
+### 🛍️ E-commerce Category Selection
+
+```typescript
+const categories = await treeSelect({
+  message: 'Select product categories to feature:',
+  tree: [
+    {
+      value: 'electronics',
+      name: 'Electronics',
+      children: [
+        {
+          value: 'computers',
+          name: 'Computers',
+          children: [
+            { value: 'laptops', name: 'Laptops' },
+            { value: 'desktops', name: 'Desktops' },
+            { value: 'tablets', name: 'Tablets' }
+          ]
+        },
+        {
+          value: 'phones',
+          name: 'Mobile Phones',
+          children: [
+            { value: 'smartphones', name: 'Smartphones' },
+            { value: 'accessories', name: 'Phone Accessories' }
+          ]
+        }
+      ]
+    },
+    {
+      value: 'clothing',
+      name: 'Clothing',
+      children: [
+        { value: 'mens', name: "Men's Clothing" },
+        { value: 'womens', name: "Women's Clothing" },
+        { value: 'kids', name: "Kids' Clothing" }
+      ]
+    }
+  ]
+});
+```
+
+### 📋 Feature/Permission Selection
+
+```typescript
+interface Permission {
+  id: string;
+  scope: string;
+  level: 'read' | 'write' | 'admin';
+}
+
+const permissions = await treeSelect<Permission>({
+  message: 'Select permissions for this role:',
+  tree: [
+    {
+      value: { id: 'users', scope: 'users', level: 'admin' },
+      name: 'User Management',
+      children: [
+        { 
+          value: { id: 'users-read', scope: 'users', level: 'read' }, 
+          name: 'View Users' 
+        },
+        { 
+          value: { id: 'users-write', scope: 'users', level: 'write' }, 
+          name: 'Edit Users' 
+        },
+        { 
+          value: { id: 'users-admin', scope: 'users', level: 'admin' }, 
+          name: 'Manage Users' 
+        }
+      ]
+    },
+    {
+      value: { id: 'content', scope: 'content', level: 'admin' },
+      name: 'Content Management',
+      children: [
+        { 
+          value: { id: 'content-read', scope: 'content', level: 'read' }, 
+          name: 'View Content' 
+        },
+        { 
+          value: { id: 'content-write', scope: 'content', level: 'write' }, 
+          name: 'Edit Content' 
+        }
+      ]
+    }
+  ]
+});
+```
+
+### 🎯 Key Benefits for Non-File Data
+
+- **Type Safety**: Full TypeScript support with custom data types
+- **Flexible Values**: Use strings, objects, numbers, or any data type as values
+- **Custom Display**: `name` property controls what users see, `value` is what you get back
+- **Rich Hierarchies**: Create deep, meaningful organizational structures
+- **Batch Selection**: Select entire categories and all children automatically
+
+The generic `TreeItem<T>` interface makes it perfect for any hierarchical data structure in your applications!
+
 ## 📚 API Reference
 
 ### `treeSelect(options)`
@@ -322,7 +500,7 @@ async function myCLI() {
 }
 ```
 
-**Zero breaking changes** - just add `treeSelect` where you need hierarchical selection! 
+**Zero breaking changes** - just add `treeSelect` where you need hierarchical selection!
 
 ## 🧪 Examples
 
