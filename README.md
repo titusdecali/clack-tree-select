@@ -8,7 +8,7 @@
   <h3>💖 Sponsored by</h3>
   <h4>Stringer CLI</h4>
   <p><strong>"Make your React & Vue apps multilingual in minutes!"</strong></p>
-  <img src="https://c81fz8ovlk.ufs.sh/f/pOylDC1T5WMxVeE77528My7Qi1znPO4WjdvHBrD6fcNtTquk" alt="Stringer CLI Logo" width="250">
+  <img src="https://c81fz8ovlk.ufs.sh/f/pOylDC1T5WMxOUllPdRtGwJSYT6Bm8zgo9sN2eULKVXRkc4b" alt="Stringer CLI" width="350" />
   <br>
   <a href="https://stringer-cli.com">Learn more about Stringer CLI →</a>
 </div>
