@@ -24,7 +24,7 @@ This directory contains focused examples showing how to use clack-tree-select in
 ### `tree-select.ts` - Core Features Demo
 Showcases all tree-select functionality:
 - Basic tree selection with hierarchical data
-- Smart keyboard shortcuts (Ctrl+E, Ctrl+A)
+- Smart keyboard shortcuts (Shift+E, Shift+A)
 - File system integration with `fileSystemTreeSelect`
 - Single vs multiple selection modes
 - Custom validation and help text
@@ -40,7 +40,7 @@ Shows how to integrate tree-select with existing Clack CLIs:
 ## Features Demonstrated
 
 - **Hierarchical Selection** - Select parents to select children
-- **Smart Toggle Shortcuts** - Ctrl+E (expand/collapse all), Ctrl+A (select/deselect all)
+- **Smart Toggle Shortcuts** - Shift+E (expand/collapse all), Shift+A (select/deselect all)
 - **File System Browsing** - Browse local directories with filtering
 - **Customizable Styling** - Custom icons and validation messages
 - **TypeScript Integration** - Full type safety and IntelliSense
@@ -51,8 +51,8 @@ Use the example to test:
 - ↑↓ Navigation
 - ←→ Expand/collapse directories
 - Space to toggle selection
-- Ctrl+E to toggle expand/collapse all
-- Ctrl+A to toggle select/deselect all
+- Shift+E to toggle expand/collapse all
+- Shift+A to toggle select/deselect all
 - Enter to submit
 - Ctrl+C to cancel (standard terminal shortcut)
 

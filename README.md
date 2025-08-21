@@ -336,8 +336,8 @@ const files = await fileSystemTreeSelect({
 | `↑` / `↓` | Navigate up/down |
 | `←` / `→` | Collapse/expand directory |
 | `Space` | Toggle selection |
-| `Ctrl+E` | Toggle expand/collapse all |
-| `Ctrl+A` | Toggle select/deselect all |
+| `Shift+E` | Toggle expand/collapse all |
+| `Shift+A` | Toggle select/deselect all |
 | `Enter` | Submit selection |
 | `Ctrl+C` | Cancel prompt |
 

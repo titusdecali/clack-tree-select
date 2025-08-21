@@ -7,7 +7,7 @@ import { intro, outro, isCancel } from '@clack/prompts';
  * This demo showcases the improved clack-tree-select with:
  * - ✨ Better TypeScript types and inference
  * - 🚀 Performance optimizations with caching
- * - ⌨️  Smart toggle shortcuts (Ctrl+E expand/collapse all, Ctrl+A select/deselect all)
+ * - ⌨️  Smart toggle shortcuts (Shift+E expand/collapse all, Shift+A select/deselect all)
  * - 🎨 Customizable icons and better defaults
  * - 📚 Comprehensive JSDoc documentation
  * - ✅ Improved validation with helpful messages
@@ -53,7 +53,7 @@ async function main() {
 	];
 
 	const selected = await treeSelect<string>({
-		message: 'Select files and folders (try Ctrl+E to expand all, Ctrl+A to select all):',
+		message: 'Select files and folders (try Shift+E to expand all, Shift+A to select all):',
 		tree: simpleTree,
 		// Enhanced defaults: multiple=true, required=false
 		showHelp: true, // Shows keyboard shortcuts in validation message

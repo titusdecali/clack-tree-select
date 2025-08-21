@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Changed
+- **Keyboard Shortcuts**: Updated toggle shortcuts from `Ctrl+A`/`Ctrl+E` to `Shift+A`/`Shift+E` for better cross-platform compatibility (Windows compatibility fix).
+
 ### Fixed
 - **Single Selection Mode**: Fixed directories being selectable in single selection mode. Directories now display with circle (○) indicators and cannot be selected, ensuring only leaf nodes (files) are selectable.
 - **Dependency Updates**: Updated to `@clack/core@1.0.0-alpha.1` and `@clack/prompts@1.0.0-alpha.1` for improved compatibility and performance.
@@ -28,8 +31,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 - 🌳 **Initial Release** - Beautiful tree selection prompts for CLI applications
 - ⌨️ **Smart Keyboard Shortcuts** - Intuitive navigation with toggle shortcuts
-  - `Ctrl+E` - Toggle expand/collapse all directories
-  - `Ctrl+A` - Toggle select/deselect all items  
+  - `Shift+E` - Toggle expand/collapse all directories
+  - `Shift+A` - Toggle select/deselect all items  
   - Arrow keys for navigation, Space for selection
   - `Ctrl+C` - Cancel prompt (standard terminal behavior)
 - 🎯 **Hierarchical Selection** - Selecting parent directories automatically selects all children

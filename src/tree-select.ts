@@ -219,8 +219,8 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 						`Shortcuts: ${color.gray(color.bgWhite(color.inverse(' space ')))} select, ` +
 						`${color.gray(color.bgWhite(color.inverse(' → ')))} expand, ` +
 						`${color.gray(color.bgWhite(color.inverse(' ← ')))} collapse, ` +
-						`${color.gray(color.bgWhite(color.inverse(' ctrl+e ')))} toggle expand all, ` +
-						`${color.gray(color.bgWhite(color.inverse(' ctrl+a ')))} toggle select all, ` +
+						`${color.gray(color.bgWhite(color.inverse(' shift+e ')))} toggle expand all, ` +
+						`${color.gray(color.bgWhite(color.inverse(' shift+a ')))} toggle select all, ` +
 						`${color.gray(color.bgWhite(color.inverse(' enter ')))} submit`
 					)
 				)}` : '';

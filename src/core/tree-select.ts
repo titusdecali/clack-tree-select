@@ -96,7 +96,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 
 		// Set up keyboard shortcuts
 		this.on('key', (char, key) => {
-			if (key?.ctrl) {
+			if (key?.shift) {
 				switch (key.name) {
 					case 'e':
 						this.toggleExpandAll();
