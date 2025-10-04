@@ -1,6 +1,6 @@
 {
   "name": "clack-tree-select",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "Beautiful, interactive, searchable tree selection prompt for Clack CLI apps",
   "type": "module",
   "main": "./dist/index.mjs",

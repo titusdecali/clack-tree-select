@@ -206,13 +206,10 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 		return `${indent}${color.dim(S_CHECKBOX_INACTIVE)} ${color.dim(`${dirIndicator}${icon} ${name}`)}`;
 	};
 
-	const prompt = new TreeSelectPrompt({
-		...config,
-		tree: config.tree,
-		signal: config.signal,
-		input: config.input,
-		output: config.output,
-		validate(selected: Value[] | undefined) {
+  const prompt = new TreeSelectPrompt({
+    ...(config as any),
+    tree: config.tree as any,
+    validate(selected: any) {
 			if (config.required && (selected === undefined || selected.length === 0)) {
 				const helpText = config.showHelp ? `\n${color.reset(
 					color.dim(
@@ -229,14 +226,29 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 				return `Please select at least one option.${helpText}`;
 			}
 		},
-		render() {
-			const title = `${color.gray(S_BAR)}\n${symbol(this.state)}  ${opts.message}\n`;
-			const value = this.value ?? [];
+    render(this: any) {
+      const title = `${color.gray(S_BAR)}\n${symbol(this.state)}  ${opts.message}\n`;
+      const value: Value[] = this.value ?? [];
 
-			// Get visible items from the flattened tree (search-aware)
-			const visibleItems = (this as any).getVisibleFlatTree ? (this as any).getVisibleFlatTree() : (this.flatTree || []);
-			const searching = (this as any).isSearching ?? false;
-			const searchQuery = (this as any).searchQuery ?? '';
+			// Get visible items (search-aware); apply fuzzy filter that ignores spaces
+      const baseItems = this.getVisibleFlatTree ? this.getVisibleFlatTree() : (this.flatTree || []);
+      const searchText: string = this.searchQuery ?? '';
+			const normalized = searchText.replace(/\s+/g, '').toLowerCase();
+			const isFuzzyMatch = (name: string, q: string): boolean => {
+				if (!q) return true;
+				const target = (name || '').replace(/\s+/g, '').toLowerCase();
+				let ti = 0;
+				for (let qi = 0; qi < q.length; qi++) {
+					const qc = q[qi];
+					ti = target.indexOf(qc, ti);
+					if (ti === -1) return false;
+					ti += 1;
+				}
+				return true;
+			};
+      const visibleItems = normalized ? baseItems.filter((it: any) => isFuzzyMatch(it.name, normalized)) : baseItems;
+      const searching = this.isSearching ?? false;
+      const searchQuery = this.searchQuery ?? '';
 			
 			const styleOption = (item: any, active: boolean) => {
 				const selected = value.includes(item.value);
@@ -249,11 +261,11 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 				return renderTreeItem(item, active ? 'active' : 'inactive');
 			};
 
-			const searchLine = config.searchable && (searching || searchQuery)
+      const searchLine = config.searchable && (searching || searchQuery)
 				? `${color.gray(S_BAR)}  ${color.dim('Search: ')}${searchQuery || ''}\n`
 				: '';
 
-			switch (this.state) {
+      switch (this.state) {
 				case 'submit': {
 					const selectedItems = visibleItems
 						.filter((item: any) => value.includes(item.value))
@@ -273,9 +285,9 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 					}`;
 				}
 				case 'error': {
-					const footer = this.error
-						.split('\n')
-						.map((ln, i) =>
+          const footer = String(this.error)
+            .split('\n')
+            .map((ln: string, i: number) =>
 							i === 0 ? `${color.yellow(S_BAR_END)}  ${color.yellow(ln)}` : `   ${ln}`
 						)
 						.join('\n');

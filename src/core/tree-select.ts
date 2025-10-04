@@ -1,4 +1,4 @@
-import { Prompt, type PromptOptions, isCancel } from '@clack/core';
+import { Prompt, isCancel } from '@clack/core';
 
 /**
  * Represents a tree item with optional children and metadata
@@ -40,8 +40,7 @@ export interface TreeSelectConfig {
  * Complete options for the TreeSelectPrompt
  * @template T The type of values in the tree
  */
-export interface TreeSelectOptions<T = any>
-	extends PromptOptions<T[], TreeSelectPrompt<T>>, TreeSelectConfig {
+export interface TreeSelectOptions<T = any> extends TreeSelectConfig {
 	/** The tree structure to display */
 	tree: TreeItem<T>[] | string[] | T[];
 	/** Initial selected values */
@@ -50,6 +49,12 @@ export interface TreeSelectOptions<T = any>
 	cursorAt?: T;
 	/** Custom validation function */
 	validate?: (value: T[] | undefined) => string | void;
+	/** Optional render function consumed by Prompt */
+	render?: () => string;
+	/** Optional runtime fields forwarded to Prompt environment */
+	signal?: AbortSignal;
+	input?: NodeJS.ReadStream;
+	output?: NodeJS.WriteStream;
 }
 
 interface FlatTreeItem<T> {
@@ -76,7 +81,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	isSearching = false;
 
 	constructor(opts: TreeSelectOptions<T>) {
-		super(opts, false);
+		super(opts as any, false);
 		this.tree = this.normalizeTree(opts.tree);
 		this.multiple = opts.multiple ?? true;
 		this.config = {
@@ -116,6 +121,11 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 
 			if (!this.config.searchable) return;
 
+			// Prevent spaces from entering the query; space is reserved for selection
+			if (key?.name === 'space') {
+				return;
+			}
+
 			// Backspace deletes last character while searching
 			if (key?.name === 'backspace') {
 				if (this.isSearching && this.searchQuery.length > 0) {
@@ -139,12 +149,14 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			}
 
 			// Append printable characters to start/continue searching
-			if (typeof char === 'string' && char.length === 1 && !key?.ctrl && !key?.meta && !key?.alt) {
+			if (typeof char === 'string' && char.length === 1 && !key?.ctrl && !key?.meta) {
+				// Ignore whitespace characters entirely for query input
+				if (char.trim().length === 0) return;
 				const code = char.charCodeAt(0);
 				// Basic printable range including a-z/A-Z/0-9 and common filename chars
 				if (code >= 32 && code <= 126) {
 					this.isSearching = true;
-					this.searchQuery += char;
+					this.searchQuery = this.searchQuery + char;
 					this.cursor = 0;
 				}
 			}
@@ -156,7 +168,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	}
 
 	private normalizeTreeItem(item: TreeItem<T> | string | T): TreeItem<T> {
-		if (typeof item === 'string' || (typeof item === 'object' && !('value' in item))) {
+		if (typeof item === 'string' || (item !== null && typeof item === 'object' && !('value' in item))) {
 			return {
 				value: item as T,
 				name: String(item),
@@ -223,9 +235,24 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 
 	/** Return the list of items currently visible (search-filtered or by open state) */
 	public getVisibleFlatTree(): FlatTreeItem<T>[] {
-		if (!this.isSearching || !this.searchQuery) return this.flatTree;
-		const q = this.searchQuery.toLowerCase();
-		return this.buildFullFlatTree().filter((it) => it.name.toLowerCase().includes(q));
+		const qRaw = this.searchQuery ?? '';
+		const q = qRaw.replace(/\s+/g, '').toLowerCase();
+		if (!q) return this.flatTree;
+		return this.buildFullFlatTree().filter((it) => this.isFuzzyMatch(it.name || '', q));
+	}
+
+	/** Fuzzy match: query (spaces removed) must appear in order within name (spaces removed) */
+	private isFuzzyMatch(name: string, queryNoSpacesLower: string): boolean {
+		const target = (name || '').replace(/\s+/g, '').toLowerCase();
+		if (!queryNoSpacesLower) return true;
+		let ti = 0;
+		for (let qi = 0; qi < queryNoSpacesLower.length; qi++) {
+			const qc = queryNoSpacesLower[qi];
+			ti = target.indexOf(qc, ti);
+			if (ti === -1) return false;
+			ti += 1;
+		}
+		return true;
 	}
 
 	private toggleDirectory(targetValue: T) {
@@ -292,6 +319,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	}
 
 	private selectChildren(children: TreeItem<T>[]) {
+		if (!this.value) this.value = [];
 		for (const child of children) {
 			if (!this.value.includes(child.value)) {
 				this.value.push(child.value);
@@ -303,6 +331,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	}
 
 	private deselectChildren(children: TreeItem<T>[]) {
+		if (!this.value) this.value = [];
 		for (const child of children) {
 			this.value = this.value.filter(v => v !== child.value);
 			if (child.children) {
@@ -386,8 +415,9 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 		};
 		
 		const allValues = getAllValues(this.tree);
-		return allValues.length === this.value.length && 
-			   allValues.every(val => this.value.includes(val));
+		const current = this.value ?? [];
+		return allValues.length === current.length && 
+			   allValues.every(val => current.includes(val));
 	}
 
 	private toggleExpandAll() {
@@ -408,8 +438,9 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 		}
 	}
 
-	private handleCursor(key: string): void {
+	private handleCursor(key?: string): void {
 		if (this.state !== 'active') return;
+		if (!key) return;
 
 		const visible = this.getVisibleFlatTree();
 		const currentItem = visible[this.cursor];
