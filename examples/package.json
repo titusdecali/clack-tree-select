@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "tree-select": "tsx tree-select.ts",
-    "integration": "tsx integration-demo.ts"
+    "integration": "tsx integration-demo.ts",
+    "search": "tsx searchable-tree-select.ts"
   },
   "dependencies": {
     "clack-tree-select": "file:..",

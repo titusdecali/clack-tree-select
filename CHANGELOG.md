@@ -7,6 +7,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+- **Type-to-Search**: Start typing to filter items in real time during selection. `Backspace` edits the query and `Esc` clears/exits search. Enabled by default via `searchable: true` and can be disabled per prompt.
+
 ### Changed
 - **Keyboard Shortcuts**: Updated toggle shortcuts from `Ctrl+A`/`Ctrl+E` to `Shift+A`/`Shift+E` for better cross-platform compatibility (Windows compatibility fix).
 

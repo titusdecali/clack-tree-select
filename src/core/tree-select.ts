@@ -25,6 +25,8 @@ export interface TreeSelectConfig {
 	required?: boolean;
 	/** Show help text with keyboard shortcuts */
 	showHelp?: boolean;
+	/** Enable inline search via typing letters */
+	searchable?: boolean;
 	/** Custom icons for different item types */
 	icons?: {
 		directory?: string;
@@ -69,6 +71,9 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	cursor = 0;
 	multiple: boolean;
 	config: TreeSelectConfig;
+	// Search state
+	searchQuery = '';
+	isSearching = false;
 
 	constructor(opts: TreeSelectOptions<T>) {
 		super(opts, false);
@@ -78,6 +83,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			multiple: opts.multiple ?? true,
 			required: opts.required ?? false,
 			showHelp: opts.showHelp ?? true,
+			searchable: (opts as any).searchable ?? true,
 			icons: {
 				directory: '📁',
 				file: '📄',
@@ -94,16 +100,52 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			this.handleCursor(key);
 		});
 
-		// Set up keyboard shortcuts
+		// Set up keyboard shortcuts and search handling
 		this.on('key', (char, key) => {
+			// Handle shifted shortcuts first and do not fall through
 			if (key?.shift) {
 				switch (key.name) {
 					case 'e':
 						this.toggleExpandAll();
-						break;
+						return;
 					case 'a':
 						this.toggleSelectAll();
-						break;
+						return;
+				}
+			}
+
+			if (!this.config.searchable) return;
+
+			// Backspace deletes last character while searching
+			if (key?.name === 'backspace') {
+				if (this.isSearching && this.searchQuery.length > 0) {
+					this.searchQuery = this.searchQuery.slice(0, -1);
+					if (this.searchQuery.length === 0) {
+						this.isSearching = false;
+					}
+					this.cursor = 0;
+				}
+				return;
+			}
+
+			// Escape exits search mode
+			if (key?.name === 'escape') {
+				if (this.isSearching) {
+					this.searchQuery = '';
+					this.isSearching = false;
+					this.cursor = 0;
+				}
+				return;
+			}
+
+			// Append printable characters to start/continue searching
+			if (typeof char === 'string' && char.length === 1 && !key?.ctrl && !key?.meta && !key?.alt) {
+				const code = char.charCodeAt(0);
+				// Basic printable range including a-z/A-Z/0-9 and common filename chars
+				if (code >= 32 && code <= 126) {
+					this.isSearching = true;
+					this.searchQuery += char;
+					this.cursor = 0;
 				}
 			}
 		});
@@ -153,6 +195,37 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			}
 		};
 		flatten(this.tree);
+	}
+
+	/** Build a flattened list of the entire tree ignoring open/closed state */
+	private buildFullFlatTree(): FlatTreeItem<T>[] {
+		const result: FlatTreeItem<T>[] = [];
+		const flattenAll = (items: TreeItem<T>[], level = 0, parent?: FlatTreeItem<T>) => {
+			for (const item of items) {
+				const flatItem: FlatTreeItem<T> = {
+					value: item.value,
+					name: item.name || String(item.value),
+					level,
+					isDirectory: Boolean(item.children),
+					isOpen: item.open || false,
+					parent,
+					originalItem: item,
+				};
+				result.push(flatItem);
+				if (item.children) {
+					flattenAll(item.children as TreeItem<T>[], level + 1, flatItem);
+				}
+			}
+		};
+		flattenAll(this.tree);
+		return result;
+	}
+
+	/** Return the list of items currently visible (search-filtered or by open state) */
+	public getVisibleFlatTree(): FlatTreeItem<T>[] {
+		if (!this.isSearching || !this.searchQuery) return this.flatTree;
+		const q = this.searchQuery.toLowerCase();
+		return this.buildFullFlatTree().filter((it) => it.name.toLowerCase().includes(q));
 	}
 
 	private toggleDirectory(targetValue: T) {
@@ -338,14 +411,15 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 	private handleCursor(key: string): void {
 		if (this.state !== 'active') return;
 
-		const currentItem = this.flatTree[this.cursor];
+		const visible = this.getVisibleFlatTree();
+		const currentItem = visible[this.cursor];
 		
 		switch (key) {
 			case 'up':
 				this.cursor = Math.max(0, this.cursor - 1);
 				break;
 			case 'down':
-				this.cursor = Math.min(this.flatTree.length - 1, this.cursor + 1);
+				this.cursor = Math.min(Math.max(visible.length - 1, 0), this.cursor + 1);
 				break;
 			case 'right':
 				if (currentItem?.isDirectory && !currentItem.isOpen) {
@@ -376,6 +450,8 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			cursor: this.cursor,
 			state: this.state,
 			flatTree: this.flatTree,
+			searchQuery: this.searchQuery,
+			isSearching: this.isSearching,
 		};
 	}
 

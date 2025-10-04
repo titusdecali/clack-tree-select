@@ -29,6 +29,7 @@ Beautiful, interactive tree selection prompts for command-line applications. Bui
 
 - 🌳 **Hierarchical Selection** - Select parent directories to select all children
 - ⌨️ **Smart Keyboard Shortcuts** - Intuitive navigation with toggle expand/select all
+- 🔎 **Type-to-Search (new)** - Start typing to filter items in real time; Esc clears
 - 🎨 **Customizable Styling** - Beautiful icons and colors that match your brand
 - 🚀 **Performance Optimized** - Efficient rendering for large directory trees  
 - 📱 **TypeScript Ready** - Full type safety with excellent IntelliSense
@@ -289,6 +290,7 @@ Creates an interactive tree selection prompt.
 | `initialValues` | `T[]` | `[]` | Pre-selected values |
 | `required` | `boolean` | `false` | Require at least one selection |
 | `maxItems` | `number` | `undefined` | Maximum visible items (scrolling) |
+| `searchable` | `boolean` | `true` | Enable inline search. Type to filter; `Esc` clears |
 | `icons` | `IconOptions` | default icons | Custom icons for tree items |
 | `showHelp` | `boolean` | `true` | Show keyboard shortcuts in validation |
 
@@ -314,6 +316,33 @@ interface IconOptions {
 }
 ```
 
+### 🔎 Using the `searchable` option
+
+Type-to-search is enabled by default. You can explicitly enable/disable it per prompt:
+
+```typescript
+import { treeSelect } from 'clack-tree-select';
+
+// Explicitly enable (default)
+await treeSelect({
+  message: 'Pick files (type to search, Esc to clear):',
+  tree: myTree,
+  searchable: true,
+});
+
+// Disable type-to-search
+await treeSelect({
+  message: 'Pick files (search disabled):',
+  tree: myTree,
+  searchable: false,
+});
+```
+
+Behavior when enabled:
+- Start typing to filter items across the entire hierarchy
+- Backspace edits the query; Esc clears/exits search
+- Arrow keys and Space operate over the filtered list
+
 ### `fileSystemTreeSelect(options)`
 
 Creates a tree selection prompt from a file system directory.
@@ -336,6 +365,9 @@ const files = await fileSystemTreeSelect({
 | `↑` / `↓` | Navigate up/down |
 | `←` / `→` | Collapse/expand directory |
 | `Space` | Toggle selection |
+| `type` | Start search and filter visible items |
+| `Backspace` | Delete last character in search |
+| `Esc` | Clear search / exit search |
 | `Shift+E` | Toggle expand/collapse all |
 | `Shift+A` | Toggle select/deselect all |
 | `Enter` | Submit selection |
@@ -515,6 +547,9 @@ pnpm tree-select
 
 # Complete integration with other Clack prompts
 pnpm integration
+
+# Searchable demo (type to filter, Esc to clear)
+pnpm run search
 ```
 
 The integration demo shows a real CLI workflow mixing `treeSelect` with `text`, `select`, `multiselect`, and `confirm` prompts.

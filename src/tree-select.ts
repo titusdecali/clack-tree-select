@@ -221,7 +221,8 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 						`${color.gray(color.bgWhite(color.inverse(' ← ')))} collapse, ` +
 						`${color.gray(color.bgWhite(color.inverse(' shift+e ')))} toggle expand all, ` +
 						`${color.gray(color.bgWhite(color.inverse(' shift+a ')))} toggle select all, ` +
-						`${color.gray(color.bgWhite(color.inverse(' enter ')))} submit`
+						`${color.gray(color.bgWhite(color.inverse(' enter ')))} submit` +
+						(config.searchable ? `, ${color.gray(color.bgWhite(color.inverse(' type ')))} search, ${color.gray(color.bgWhite(color.inverse(' esc ')))} clear` : '')
 					)
 				)}` : '';
 				
@@ -232,8 +233,10 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 			const title = `${color.gray(S_BAR)}\n${symbol(this.state)}  ${opts.message}\n`;
 			const value = this.value ?? [];
 
-			// Get visible items from the flattened tree
-			const visibleItems = this.flatTree || [];
+			// Get visible items from the flattened tree (search-aware)
+			const visibleItems = (this as any).getVisibleFlatTree ? (this as any).getVisibleFlatTree() : (this.flatTree || []);
+			const searching = (this as any).isSearching ?? false;
+			const searchQuery = (this as any).searchQuery ?? '';
 			
 			const styleOption = (item: any, active: boolean) => {
 				const selected = value.includes(item.value);
@@ -246,6 +249,10 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 				return renderTreeItem(item, active ? 'active' : 'inactive');
 			};
 
+			const searchLine = config.searchable && (searching || searchQuery)
+				? `${color.gray(S_BAR)}  ${color.dim('Search: ')}${searchQuery || ''}\n`
+				: '';
+
 			switch (this.state) {
 				case 'submit': {
 					const selectedItems = visibleItems
@@ -253,7 +260,7 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 						.map((item: any) => renderTreeItem(item, 'submitted'))
 						.join(color.dim(', '));
 					
-					return `${title}${color.gray(S_BAR)}  ${selectedItems || color.dim('none')}`;
+					return `${title}${searchLine}${color.gray(S_BAR)}  ${selectedItems || color.dim('none')}`;
 				}
 				case 'cancel': {
 					const selectedItems = visibleItems
@@ -261,7 +268,7 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 						.map((item: any) => renderTreeItem(item, 'cancelled'))
 						.join(color.dim(', '));
 					
-					return `${title}${color.gray(S_BAR)}${
+					return `${title}${searchLine}${color.gray(S_BAR)}${
 						selectedItems.trim() ? `  ${selectedItems}\n${color.gray(S_BAR)}` : ''
 					}`;
 				}
@@ -273,7 +280,7 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 						)
 						.join('\n');
 					
-					return `${title + color.yellow(S_BAR)}  ${limitOptions({
+					return `${title}${searchLine}${color.yellow(S_BAR)}  ${limitOptions({
 						output: opts.output,
 						options: visibleItems,
 						cursor: this.cursor,
@@ -282,7 +289,7 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 					}).join(`\n${color.yellow(S_BAR)}  `)}\n${footer}\n`;
 				}
 				default: {
-					return `${title}${color.cyan(S_BAR)}  ${limitOptions({
+					return `${title}${searchLine}${color.cyan(S_BAR)}  ${limitOptions({
 						output: opts.output,
 						options: visibleItems,
 						cursor: this.cursor,

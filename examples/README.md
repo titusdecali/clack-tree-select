@@ -17,6 +17,9 @@ This directory contains focused examples showing how to use clack-tree-select in
    
    # Integration with other Clack prompts
    pnpm integration
+
+   # Searchable tree-select (type to filter; Esc to clear)
+   pnpm run search
    ```
 
 ## Available Examples
@@ -41,6 +44,7 @@ Shows how to integrate tree-select with existing Clack CLIs:
 
 - **Hierarchical Selection** - Select parents to select children
 - **Smart Toggle Shortcuts** - Shift+E (expand/collapse all), Shift+A (select/deselect all)
+- **Type-to-Search** - Start typing to filter items; Backspace to edit; Esc to clear
 - **File System Browsing** - Browse local directories with filtering
 - **Customizable Styling** - Custom icons and validation messages
 - **TypeScript Integration** - Full type safety and IntelliSense
