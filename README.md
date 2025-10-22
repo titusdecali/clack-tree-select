@@ -15,7 +15,8 @@
 
 ---
 
-Beautiful, interactive tree selection prompts for command-line applications. Built on top of [Clack](https://github.com/bombshell-dev/clack) for the best CLI experience.
+Beautiful, interactive tree selection prompt plugin for Clack-based command-line applications. 
+Built for use specifically with [Clack](https://github.com/bombshell-dev/clack).
 
 ## 🎬 Demo
 
