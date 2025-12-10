@@ -141,13 +141,20 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 				return;
 			}
 
-			// Escape exits search mode
+			// Escape exits search mode (but doesn't cancel the prompt)
 			if (key?.name === 'escape') {
-				if (this.isSearching) {
+				if (this.isSearching || this.searchQuery.length > 0) {
 					this.searchQuery = '';
 					this.isSearching = false;
 					this.cursor = 0;
+					// Prevent the base Prompt class from canceling - reset state to active
+					// The base class may have already set state to 'cancel', so we revert it
+					if ((this as any).state === 'cancel') {
+						(this as any).state = 'active';
+					}
+					return;
 				}
+				// If not searching, let escape trigger cancel (default behavior)
 				return;
 			}
 
