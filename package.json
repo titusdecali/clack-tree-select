@@ -1,6 +1,6 @@
 {
   "name": "clack-tree-select",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Beautiful, interactive, searchable tree selection prompt for Clack CLI apps",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -27,6 +27,7 @@
   "scripts": {
     "build": "unbuild",
     "prepublishOnly": "pnpm build",
+    "publishtonpm": "pnpm build && pnpm publish --tag latest --no-git-checks",
     "test": "vitest run",
     "dev": "unbuild --watch",
     "lint": "biome lint --write",

@@ -24,6 +24,8 @@ export interface TreeSelectOptions<Value> extends CommonOptions {
 	onlyShowDirectories?: boolean;
 	/** Enable search functionality (default: true for better UX) */
 	searchable?: boolean;
+	/** When searching, only match directories/folders, not files (default: false) */
+	searchDirectoriesOnly?: boolean;
 	/** Maximum tree depth to display (default: Infinity) */
 	maxDepth?: number;
 	/** Custom icons for different item types */
@@ -230,23 +232,8 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
       const title = `${color.gray(S_BAR)}\n${symbol(this.state)}  ${opts.message}\n`;
       const value: Value[] = this.value ?? [];
 
-			// Get visible items (search-aware); apply fuzzy filter that ignores spaces
-      const baseItems = this.getVisibleFlatTree ? this.getVisibleFlatTree() : (this.flatTree || []);
-      const searchText: string = this.searchQuery ?? '';
-			const normalized = searchText.replace(/\s+/g, '').toLowerCase();
-			const isFuzzyMatch = (name: string, q: string): boolean => {
-				if (!q) return true;
-				const target = (name || '').replace(/\s+/g, '').toLowerCase();
-				let ti = 0;
-				for (let qi = 0; qi < q.length; qi++) {
-					const qc = q[qi];
-					ti = target.indexOf(qc, ti);
-					if (ti === -1) return false;
-					ti += 1;
-				}
-				return true;
-			};
-      const visibleItems = normalized ? baseItems.filter((it: any) => isFuzzyMatch(it.name, normalized)) : baseItems;
+			// Get visible items (search-aware) - getVisibleFlatTree already handles filtering
+      const visibleItems = this.getVisibleFlatTree ? this.getVisibleFlatTree() : (this.flatTree || []);
       const searching = this.isSearching ?? false;
       const searchQuery = this.searchQuery ?? '';
 			
@@ -301,6 +288,10 @@ export const treeSelect = <Value>(opts: TreeSelectOptions<Value>) => {
 					}).join(`\n${color.yellow(S_BAR)}  `)}\n${footer}\n`;
 				}
 				default: {
+					// Show "No matches" when search returns empty results
+					if (visibleItems.length === 0 && searchQuery) {
+						return `${title}${searchLine}${color.cyan(S_BAR)}  ${color.dim('No matches found. Press Esc to clear search.')}\n${color.cyan(S_BAR_END)}\n`;
+					}
 					return `${title}${searchLine}${color.cyan(S_BAR)}  ${limitOptions({
 						output: opts.output,
 						options: visibleItems,

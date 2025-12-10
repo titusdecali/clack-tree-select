@@ -27,6 +27,8 @@ export interface TreeSelectConfig {
 	showHelp?: boolean;
 	/** Enable inline search via typing letters */
 	searchable?: boolean;
+	/** When searching, only match directories/folders, not files (default: false) */
+	searchDirectoriesOnly?: boolean;
 	/** Custom icons for different item types */
 	icons?: {
 		directory?: string;
@@ -89,6 +91,7 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 			required: opts.required ?? false,
 			showHelp: opts.showHelp ?? true,
 			searchable: (opts as any).searchable ?? true,
+			searchDirectoriesOnly: (opts as any).searchDirectoriesOnly ?? false,
 			icons: {
 				directory: '📁',
 				file: '📄',
@@ -238,7 +241,15 @@ export class TreeSelectPrompt<T> extends Prompt<T[]> {
 		const qRaw = this.searchQuery ?? '';
 		const q = qRaw.replace(/\s+/g, '').toLowerCase();
 		if (!q) return this.flatTree;
-		return this.buildFullFlatTree().filter((it) => this.isFuzzyMatch(it.name || '', q));
+		
+		const searchDirsOnly = this.config.searchDirectoriesOnly ?? false;
+		return this.buildFullFlatTree().filter((it) => {
+			// If searchDirectoriesOnly is enabled, only match directories/folders
+			if (searchDirsOnly && !it.isDirectory) {
+				return false;
+			}
+			return this.isFuzzyMatch(it.name || '', q);
+		});
 	}
 
 	/** Fuzzy match: query (spaces removed) must appear in order within name (spaces removed) */

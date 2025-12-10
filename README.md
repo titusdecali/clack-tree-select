@@ -292,6 +292,7 @@ Creates an interactive tree selection prompt.
 | `required` | `boolean` | `false` | Require at least one selection |
 | `maxItems` | `number` | `undefined` | Maximum visible items (scrolling) |
 | `searchable` | `boolean` | `true` | Enable inline search. Type to filter; `Esc` clears |
+| `searchDirectoriesOnly` | `boolean` | `false` | When searching, only match folders (items with children), not files |
 | `icons` | `IconOptions` | default icons | Custom icons for tree items |
 | `showHelp` | `boolean` | `true` | Show keyboard shortcuts in validation |
 
@@ -343,6 +344,35 @@ Behavior when enabled:
 - Start typing to filter items across the entire hierarchy
 - Backspace edits the query; Esc clears/exits search
 - Arrow keys and Space operate over the filtered list
+
+### 🔎 Using the `searchDirectoriesOnly` option
+
+When you want search to only match folders (items with children) and not files, use `searchDirectoriesOnly`:
+
+```typescript
+import { treeSelect } from 'clack-tree-select';
+
+// Search matches ALL items (default behavior)
+await treeSelect({
+  message: 'Select items:',
+  tree: myTree,
+  searchable: true,
+  searchDirectoriesOnly: false, // default
+});
+
+// Search matches ONLY folders/directories
+await treeSelect({
+  message: 'Select folders to ignore:',
+  tree: myTree,
+  searchable: true,
+  searchDirectoriesOnly: true,
+});
+```
+
+This is useful when you have a flat list of folders and want users to quickly find specific folders without matching file names. When `searchDirectoriesOnly` is `true`:
+- Only items with `children` property are matched during search
+- Files/leaf nodes are filtered out of search results
+- When search is cleared (Esc), all items are shown again
 
 ### `fileSystemTreeSelect(options)`
 
