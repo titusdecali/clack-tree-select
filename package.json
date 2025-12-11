@@ -1,6 +1,6 @@
 {
   "name": "clack-tree-select",
-  "version": "1.0.6",
+  "version": "1.0.7",
   "description": "Beautiful, interactive, searchable tree selection prompt for Clack CLI apps",
   "type": "module",
   "main": "./dist/index.mjs",
@@ -62,13 +62,13 @@
   },
   "homepage": "https://github.com/titusdecali/clack-tree-select#readme",
   "dependencies": {
-    "@clack/core": "^1.0.0-alpha.1",
+    "@clack/core": "^1.0.0-alpha.7",
     "is-unicode-supported": "^1.3.0",
     "picocolors": "^1.0.0",
     "sisteransi": "^1.0.5"
   },
   "peerDependencies": {
-    "@clack/prompts": ">=0.8.0"
+    "@clack/prompts": ">=0.8.0 || ^1.0.0-alpha.7"
   },
   "devDependencies": {
     "@biomejs/biome": "^2.1.2",
